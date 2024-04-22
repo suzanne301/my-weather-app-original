@@ -18,6 +18,7 @@ function refreshWeather(response) {
   windSpeedElement.innerHTML = `${response.data.wind.speed}km/h`;
   temperatureElement.innerHTML = Math.round(temperature);
   iconElement.innerHTML = `<img src="${response.data.condition.icon_url}" class="weather-app-icon" />`;
+  
   getForecast(response.data.city);
 }
 
@@ -25,14 +26,22 @@ function refreshWeather(response) {
 function formatDate(date) {
   let minutes = date.getMinutes();
   let hours = date.getHours();
-  let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+  let days = [
+    'Sunday', 
+    'Monday', 
+    'Tuesday', 
+    'Wednesday', 
+    'Thursday', 
+    'Friday', 
+    'Saturday'
+  ];
   let day = days[date.getDay()];
 
   if (minutes < 10) {
     minutes = `0${minutes}`;
   }
 
-  return `${day}, ${hours}:${minutes}`
+  return `${day}, ${hours}:${minutes}`;
 }
 
 function searchCity(city) {
@@ -48,6 +57,10 @@ function handleSearchSubmit(event) {
   searchCity(searchInput.value);
 }
 
+function formatDay(timestamp) {
+  let date = new Date(timestamp)
+}
+
 function getForecast(city) {
   let apiKey = "03351b3tc2f7fc9oa83ff4ea58bed167";
   let apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}&units=metric`;
@@ -56,18 +69,20 @@ function getForecast(city) {
 
 function displayForecast(response) {
   // console.log(response.data)
-  let days = ["Tue", "Wed", "Thu", "Fri", "Sat"];
+
   let forecastHtml = "";
 
-  days.forEach(function (day) {
-    forecastHtml +=
+  response.data.daily.forEach(function (day) {
+    forecastHtml =
+    forecastElement +
       `  
       <div class="weather-forecast-day">      
-        <div class="weather-forecast-date">${day}</div>
+        <div class="weather-forecast-date">Tue</div>
           <div class="weather-forecast-icon">⛅️</div>
           <div class="weather-forecast-temperatures">
-          <span class="weather-forecast-temperature-max">18°</span>
-          <span class="weather-forecast-temperature-min">12°</span>
+          }° < /span>
+          <span class="weather-forecast-temperature-max">${Math.round(day.temperature.maximum)}°</span>
+          <span class = "weather-forecast-temperature-min"> °</span>
         </div>
       </div>
       `;
